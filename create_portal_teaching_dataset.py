@@ -42,6 +42,6 @@ plots.to_csv('plots.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
 
 # Export to json
 
-surveys.to_json('surveys.json')
-species.to_json('species.json')
-plots.to_json('plots.json')
+surveys.to_json('surveys.json', orient='records')
+species.to_json('species.json', orient='records')
+plots.to_json('plots.json', orient='records')
