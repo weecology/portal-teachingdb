@@ -1,7 +1,7 @@
 import pandas as pd
 import csv
 import numpy as np
-
+import sqlalchemy
 
 # Clean Surveys Table
 surveys = pd.read_csv("http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
@@ -45,3 +45,10 @@ plots.to_csv('plots.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
 surveys.to_json('surveys.json', orient='records')
 species.to_json('species.json', orient='records')
 plots.to_json('plots.json', orient='records')
+
+# Export to sqlite
+engine = sqlalchemy.create_engine('sqlite:///portal_mammals.sqlite')
+surveys.to_sql('surveys', engine, index=False, dtype={'weight': sqlalchemy.Integer,
+                                                      'hindfoot_length': sqlalchemy.Integer})
+species.to_sql('species', engine, index=False)
+plots.to_sql('plots', engine, index=False)
