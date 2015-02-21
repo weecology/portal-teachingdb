@@ -37,3 +37,9 @@ surveys.to_csv('surveys.csv', index=False)
 species.to_csv('species.csv', index=False)
 plots.to_csv('plots.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
 
+
+# Export to json
+
+surveys.to_json('surveys.json')
+species.to_json('species.json')
+plots.to_json('plots.json')
