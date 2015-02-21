@@ -1,11 +1,12 @@
 import pandas as pd
 import csv
+import numpy as np
 
 
 # Clean Surveys Table
 surveys = pd.read_csv("http://esapubs.org/archive/ecol/E090/118/Portal_rodents_19772002.csv",
                       usecols=['recordID', 'mo', 'dy', 'yr', 'plot', 'species', 'sex', 'wgt', 'hfl'],
-                      keep_default_na=False)
+                      keep_default_na=False, na_values=[''])
 surveys.rename(columns={'recordID': 'record_id', 'mo': 'month', 'dy': 'day',
                         'yr': 'year', 'species': 'species_id'},
                inplace=True)
@@ -15,7 +16,7 @@ surveys.replace({'species_id': {'NA': 'NL'}}, inplace=True)
 # Clean Species Table
 species = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt",
                       usecols=['New Code', 'ScientificName', 'Taxa'],
-                      delimiter=';', keep_default_na=False)
+                      delimiter=';', keep_default_na=False,na_values=[''])
 species.rename(columns={'New Code': 'species_id', 'Taxa': 'taxa'}, inplace=True)
 species = species[species['species_id'] != 'XX'].reset_index()
 species.replace({'species_id': {'NA': 'NL'}, 'taxa': {'Rodent-not censused': 'Rodent'}},
