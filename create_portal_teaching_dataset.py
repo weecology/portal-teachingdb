@@ -8,7 +8,8 @@ surveys = pd.read_csv("http://esapubs.org/archive/ecol/E090/118/Portal_rodents_1
                       usecols=['recordID', 'mo', 'dy', 'yr', 'plot', 'species', 'sex', 'wgt', 'hfl'],
                       keep_default_na=False, na_values=[''])
 surveys.rename(columns={'recordID': 'record_id', 'mo': 'month', 'dy': 'day',
-                        'yr': 'year', 'species': 'species_id'},
+                        'yr': 'year', 'species': 'species_id', 'wgt': 'weight',
+                        'hfl': 'hindfoot_length'},
                inplace=True)
 surveys.replace({'species_id': {'NA': 'NL'}}, inplace=True)
 
