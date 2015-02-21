@@ -34,7 +34,7 @@ plots = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_p
 
 
 # Export to csv
-surveys.to_csv('surveys.csv', index=False)
+surveys.to_csv('surveys.csv', index=False, float_format='%i')
 species.to_csv('species.csv', index=False)
 plots.to_csv('plots.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
 
