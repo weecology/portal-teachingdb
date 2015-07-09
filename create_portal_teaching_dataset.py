@@ -33,10 +33,15 @@ plots = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_p
                     usecols=['plot_id', 'plot_type'])
 
 
+# Create Combined Dataset
+combined = pd.merge(surveys, species, on='species_id')
+combined = pd.merge(combined, plots, on='plot_id')
+
 # Export to csv
 surveys.to_csv('surveys.csv', index=False, float_format='%i')
 species.to_csv('species.csv', index=False)
 plots.to_csv('plots.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
+combined.to_csv('combined.csv', index=False, float_format='%i', quoting=csv.QUOTE_NONNUMERIC)
 
 
 # Export to json
@@ -44,6 +49,7 @@ plots.to_csv('plots.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
 surveys.to_json('surveys.json', orient='records')
 species.to_json('species.json', orient='records')
 plots.to_json('plots.json', orient='records')
+combined.to_json('combined.json', orient='records')
 
 # Export to sqlite
 engine = sqlalchemy.create_engine('sqlite:///portal_mammals.sqlite')
