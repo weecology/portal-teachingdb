@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import csv
 import sqlalchemy
@@ -52,6 +53,8 @@ plots.to_json('plots.json', orient='records')
 combined.to_json('combined.json', orient='records')
 
 # Export to sqlite
+if os.path.isfile('portal_mammals.sqlite'):
+    os.remove('portal_mammals.sqlite')
 engine = sqlalchemy.create_engine('sqlite:///portal_mammals.sqlite')
 surveys.to_sql('surveys', engine, index=False, dtype={'weight': sqlalchemy.Integer,
                                                       'hindfoot_length': sqlalchemy.Integer})
