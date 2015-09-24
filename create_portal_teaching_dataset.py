@@ -11,7 +11,7 @@ surveys.rename(columns={'recordID': 'record_id', 'mo': 'month', 'dy': 'day',
                         'yr': 'year', 'plot': 'plot_id', 'species': 'species_id',
                         'wgt': 'weight', 'hfl': 'hindfoot_length'},
                inplace=True)
-surveys.replace({'species_id': {'NA': 'NL'}}, inplace=True)
+surveys.replace({'species_id': {'NA': 'NL'}, 'sex': {'P': float('nan'), 'R': float('nan'), 'Z': float('nan')}}, inplace=True)
 
 
 # Clean Species Table
