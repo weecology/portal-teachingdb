@@ -53,9 +53,19 @@ plots.to_json('plots.json', orient='records')
 combined.to_json('combined.json', orient='records')
 
 # Export to sqlite
+class RoundedNumber(sqlalchemy.TypeDecorator):
+    impl = sqlalchemy.types.Numeric
+
+    def process_bind_param(self, value, dialect):
+        if isinstance(value, float):
+            return int(value + 0.5)
+        return value
+
+
 if os.path.isfile('portal_mammals.sqlite'):
     os.remove('portal_mammals.sqlite')
 engine = sqlalchemy.create_engine('sqlite:///portal_mammals.sqlite')
-surveys.to_sql('surveys', engine, index=False)
+surveys.to_sql('surveys', engine, index=False, dtype={'weight': RoundedNumber,
+                                                      'hindfoot_length': RoundedNumber})
 species.to_sql('species', engine, index=False)
 plots.to_sql('plots', engine, index=False)
