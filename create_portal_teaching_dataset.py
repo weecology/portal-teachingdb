@@ -15,7 +15,7 @@ surveys.replace({'species_id': {'NA': 'NL'}, 'sex': {'P': float('nan'), 'R': flo
 
 
 # Clean Species Table
-species = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt",
+species = pd.read_csv("http://ecologicaldata.org/sites/default/files/portal_species.txt",
                       usecols=['New Code', 'ScientificName', 'Taxa'],
                       delimiter=';', keep_default_na=False,na_values=[''])
 species.rename(columns={'New Code': 'species_id', 'Taxa': 'taxa'}, inplace=True)
@@ -29,7 +29,7 @@ split_names = pd.DataFrame(species.ScientificName.str.split(' ').tolist(),
 species = pd.concat([species_id, split_names, taxa], axis=1)
 
 # Clean Plots Table
-plots = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt",
+plots = pd.read_csv("http://ecologicaldata.org/sites/default/files/portal_plots.txt",
                     names=['plot_id', 'plot_type_alpha', 'plot_type_num', 'plot_type'],
                     usecols=['plot_id', 'plot_type'])
 
@@ -53,10 +53,19 @@ plots.to_json('plots.json', orient='records')
 combined.to_json('combined.json', orient='records')
 
 # Export to sqlite
+class RoundedNumber(sqlalchemy.TypeDecorator):
+    impl = sqlalchemy.types.Numeric
+
+    def process_bind_param(self, value, dialect):
+        if isinstance(value, float):
+            return int(value + 0.5)
+        return value
+
+
 if os.path.isfile('portal_mammals.sqlite'):
     os.remove('portal_mammals.sqlite')
 engine = sqlalchemy.create_engine('sqlite:///portal_mammals.sqlite')
-surveys.to_sql('surveys', engine, index=False, dtype={'weight': sqlalchemy.Integer,
-                                                      'hindfoot_length': sqlalchemy.Integer})
+surveys.to_sql('surveys', engine, index=False, dtype={'weight': RoundedNumber,
+                                                      'hindfoot_length': RoundedNumber})
 species.to_sql('species', engine, index=False)
 plots.to_sql('plots', engine, index=False)
