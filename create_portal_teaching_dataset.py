@@ -13,9 +13,15 @@ surveys.rename(columns={'recordID': 'record_id', 'mo': 'month', 'dy': 'day',
                inplace=True)
 surveys.replace({'species_id': {'NA': 'NL'}, 'sex': {'P': float('nan'), 'R': float('nan'), 'Z': float('nan')}}, inplace=True)
 
+# Replace invalid dates
+surveys.loc[(surveys.year==2000) & (surveys.month==4) & (surveys.day==31),'day'] = 1
+surveys.loc[(surveys.year==2000) & (surveys.month==4) & (surveys.day==1),'month'] = 5
+surveys.loc[(surveys.year==2000) & (surveys.month==9) & (surveys.day==31), 'day'] = 1
+surveys.loc[(surveys.year==2000) & (surveys.month==9) & (surveys.day==1), 'month'] = 10
 
 # Clean Species Table
-species = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_species.txt",
+url = "https://ecologicaldata.org/sites/default/files/"
+species = pd.read_csv(url + "portal_species.txt",
                       usecols=['New Code', 'ScientificName', 'Taxa'],
                       delimiter=';', keep_default_na=False,na_values=[''])
 species.rename(columns={'New Code': 'species_id', 'Taxa': 'taxa'}, inplace=True)
@@ -29,7 +35,7 @@ split_names = pd.DataFrame(species.ScientificName.str.split(' ').tolist(),
 species = pd.concat([species_id, split_names, taxa], axis=1)
 
 # Clean Plots Table
-plots = pd.read_csv("http://wiki.ecologicaldata.org/sites/default/files/portal_plots.txt",
+plots = pd.read_csv(url + "portal_plots.txt",
                     names=['plot_id', 'plot_type_alpha', 'plot_type_num', 'plot_type'],
                     usecols=['plot_id', 'plot_type'])
 
