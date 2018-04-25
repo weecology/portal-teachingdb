@@ -60,7 +60,7 @@ combined.to_json('combined.json', orient='records')
 
 # Export to sqlite
 class RoundedNumber(sqlalchemy.TypeDecorator):
-    impl = sqlalchemy.types.Numeric
+    impl = sqlalchemy.types.Float
 
     def process_bind_param(self, value, dialect):
         if isinstance(value, float):
