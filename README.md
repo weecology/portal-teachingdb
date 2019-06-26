@@ -8,7 +8,9 @@ The database is currently available in csv, json, and sqlite.
 
 Use of this dataset should cite: http://dx.doi.org/10.6084/m9.figshare.1314459
 
-This database is not designed for research as it intentionally removes some of
-the real-world complexities. The [original database is published at Ecological
-Archives](http://esapubs.org/archive/ecol/E090/118/) and this version of the
-database should be used for research purposes.
+If you want to use the Portal Project database for research we recommend obtaining
+the data from [the main database](https://github.com/weecology/PortalData) or by
+using the [portalr R package](https://cran.r-project.org/web//packages/portalr/index.html)
+(which provides easy access to and processing of the main database). The main
+database includes more kinds of data, continues to the present instead of
+stopping in 2002, and includes additional QA/QC.
